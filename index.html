@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Naeem Khan">
+  <meta name="description"
+    content="A Licence Renewal Basic Page for practice. Fully responsive across devices using only flexbox, grid, and resposive units.">
+  <meta name="keywords" content="Flexbox, Grid, Responsiveness, Landing Page">
+  <meta name="project" content="Basic License Renewal Page">
+
+  <title>License Renewal Page Practice</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!--400;450;500;550;600-->
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      user-select: none;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    html,
+    body {
+      scroll-behavior: smooth;
+      padding-block: clamp (0.5rem, 5vw, 2rem);
+    }
+
+    body>header {
+      width: 100%;
+      height: fit-content;
+      position: sticky;
+      top: 0;
+      --header-bg: yellow;
+      background: var(--header-bg);
+      padding-block: clamp(1rem, 5vh, 2rem);
+    }
+
+    .logo {
+      width: 30%;
+      aspect-ratio: 3;
+      background: url("/assets/images/My-Logo23.png") center/cover;
+    }
+
+    .nav-wrapper {
+      width: 90%;
+      margin: 0 auto;
+      container-type: inline-size;
+      position: relative;
+      z-index: 10;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: auto;
+      width: 100%;
+      height: fit-content;
+      min-height: min(12.5cqw, 7rem);
+      --nav-border: 3px;
+      border: var(--nav-border) solid black;
+      padding: 1% 2%;
+      background: white;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      background: red;
+      width: calc(100% + var(--nav-border) * 2);
+      height: auto;
+      column-gap: 10px;
+      padding: min(2%, 1rem) min(5%, 1rem);
+      font-size: clamp(0.8rem, 2.2vw, 1.2rem);
+    }
+
+    nav ul li {
+      list-style: none;
+      height: 1.5lh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .arrow {
+      height: 50%;
+      aspect-ratio: 1;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      pointer-events: bounding-box;
+      cursor: pointer;
+      stroke: rgb(250, 250, 70);
+      fill: none;
+      stroke-width: 7;
+    }
+
+    #arrow path {
+      d: path("M 0 0 L 20 20 L 40 0");
+    }
+
+    /* This only triggers on screens smaller than 600px */
+    @media (max-width: 600px) {
+      .nav-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        container-type: inline-size;
+      }
+
+      nav {
+        position: relative;
+        justify-content: space-between;
+        padding-inline: 10px;
+        background: white;
+        height: 12.5cqw;
+      }
+
+      nav::after {
+        content: "";
+        position: absolute;
+        width: calc(100.5% + (var(--nav-border) * 2));
+        /* width 100.5% + left -0.25% => to prevent the ul below from peeking slighty on phones during pixels rounding, can be done simply with scaleX(1.05/1005) too*/
+        height: 1000%;
+        background: var(--header-bg);
+        bottom: 0;
+        left: calc((var(--nav-border) * -1) - 0.25%);
+        z-index: -1;
+      }
+
+      nav ul {
+        position: absolute;
+        left: calc(var(--nav-border) * -1);
+        bottom: 0%;
+        transform: translateY(var(--slider-num)) translateZ(-2px);
+        transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: -2;
+      }
+
+      nav.trigger-ul ul {
+        --slider-num: 100%;
+      }
+
+      nav ul li {
+        width: 100%;
+      }
+
+      .hamburger {
+        width: 10%;
+        height: 22%;
+        background: rgb(176, 56, 56);
+        /* The middle line */
+        position: relative;
+        background: blue;
+        pointer-events: auto;
+      }
+
+      .hamburger::before,
+      .hamburger::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: black;
+        left: 0;
+        border-radius: 50%;
+        outline: 0.7cqw solid white;
+      }
+
+      /* The top line */
+      .hamburger::before {
+        top: -100%;
+      }
+
+      /* The bottom line */
+      .hamburger::after {
+        top: 100%;
+      }
+
+      nav.trigger-ul .hamburger,
+      .hamburger:focus-visible.hamburger {
+        border-radius: 50%;
+        outline: 2px solid white;
+        z-index: 1;
+      }
+
+      /* The 'Buns' (Top and Bottom) */
+      nav.trigger-ul .hamburger::before,
+      nav.trigger-ul .hamburger::after,
+      .hamburger:focus-visible.hamburger::before,
+      .hamburger:focus-visible.hamburger::after {
+        border-radius: 0;
+        outline: none;
+        z-index: -1;
+      }
+
+      .hamburger,
+      .hamburger::before,
+      .hamburger::after {
+        transition: all 0.3s ease-in-out;
+      }
+
+    }
+
+    .first,
+    .second,
+    .sixth {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      font-family: sans-serif, "Segoe UI", Arial, Helvetica;
+      padding: clamp(0.5rem, 2.5vw, 2rem);
+      gap: 1.5rem;
+    }
+
+    .first {
+      flex-direction: column;
+    }
+
+    .second {
+      align-items: flex-start;
+    }
+
+    .first h1,
+    .second h2,
+    .third h2,
+    .fourth h2,
+    .fifth h2,
+    .sixth h2 {
+      font-size: clamp(1.5rem, 4vw + 1rem, 3rem);
+      font-weight: bold;
+    }
+
+    .first p,
+    .second div:first-child p,
+    .fourth>div:first-child p,
+    .sixth p {
+      width: clamp(300px, 100%, 700px);
+      text-align: center;
+      line-height: 1.5;
+      margin-inline: auto;
+    }
+
+    .first button,
+    .third a,
+    .sixth a,
+    footer button {
+      padding: 15px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: #0052cc;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .first p:nth-of-type(2),
+    .first a,
+    .fifth a {
+      font-size: 1.2rem;
+      line-height: 0.5;
+    }
+
+    .first a,
+    .fifth a {
+      color: #ff00ff;
+    }
+
+
+    .second div:first-child p,
+    .fourth div:first-child p {
+      width: clamp(300px, 100%, 850px);
+    }
+
+    .second article p {
+      line-height: 1.4;
+    }
+
+    .second div:first-child,
+    .fourth>div:first-child {
+      flex: 0 0 100%;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 3rem;
+    }
+
+    .second article {
+      flex: 1 1 350px;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .second article img {
+      margin-bottom: 0.7rem;
+    }
+
+    .second h3,
+    .fourth h3,
+    footer h3 {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .third,
+    .fifth {
+      text-align: center;
+      padding: clamp(1rem, 2.5vw, 2rem);
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      margin: 2rem auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 95%;
+      gap: 2rem;
+    }
+
+    .third div {
+      flex: 1 1 300px;
+      max-width: 400px;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .third div a {
+      width: fit-content;
+      align-self: center;
+      text-decoration: none;
+      /*text-decoration: line-position style color thickness => overline double red 0.15rem; / text-decoration-skip-ink*/
+    }
+
+    .third img {
+      flex: 2;
+      max-width: 90%;
+      min-width: 300px;
+      margin: auto;
+      border: 2px solid #ff00ff;
+      border-radius: 5px;
+    }
+
+    .fourth *,
+    .sixth *,
+    footer {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .fourth header {
+      display: none;
+    }
+
+    .fourth article {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fourth article>div,
+    article header {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+      margin: 0.2rem 0.5rem;
+      border-radius: 1rem;
+    }
+
+    .fourth article>div>div {
+      flex-basis: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      padding-right: 1rem;
+    }
+
+    .fourth article>div:nth-child(even) {
+      background: rgba(0, 255, 100, 0.15);
+    }
+
+    .fourth article h3 {
+      flex: 1 1 100%;
+    }
+
+    .fourth article p {
+      font-size: 1.1rem;
+    }
+
+    @media (width > 600px) {
+      .fourth article {
+        display: grid;
+        grid-template-columns: 6fr repeat(2, 1fr);
+      }
+
+      .fourth article>div:nth-child(n+2),
+      .fourth header {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: subgrid;
+      }
+
+      .fourth div:nth-child(n+2) h3 {
+        grid-column: 1;
+      }
+
+      .fourth div:nth-child(n+2) span:first-of-type {
+        grid-column: 2;
+      }
+
+      .fourth div:nth-child(n+2) span:last-of-type {
+        grid-column: 3;
+      }
+
+      .fourth div:nth-child(n+2) small {
+        grid-row: 2;
+      }
+
+      .fourth div:nth-child(n+2)>* {
+        grid-row: 1;
+      }
+
+      .fourth div:nth-child(n+2) p {
+        font-size: 0;
+      }
+    }
+
+    .fifth {
+      padding: 3rem;
+    }
+
+    .fifth details {
+      flex: 1 1 100%;
+      margin: auto;
+      text-align: left;
+      line-height: 1.5;
+      border: 1px solid #111;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: #eee;
+      cursor: pointer;
+      pointer-events: none;
+      interpolate-size: allow-keywords;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    details>p {
+      height: calc(var(--cont-h) * 0);
+      overflow: hidden;
+      visibility: hidden;
+      transition: height calc(var(--speed, 1s)/2) linear, visibility calc(var(--speed, 1s)/2) linear;
+    }
+
+    .fifth>a {
+      display: block;
+      width: 100%;
+    }
+
+    .activate-p {
+      height: var(--cont-h);
+      visibility: visible;
+      transition: height calc(var(--speed, 1s)/4) linear, visibility 0s;
+    }
+
+    details summary {
+      list-style: none;
+    }
+
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .fifth details summary p {
+      display: inline-block;
+      width: 85%;
+      background-color: #eee;
+      vertical-align: middle;
+    }
+
+    .fifth details summary span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 10%;
+      margin: auto;
+      vertical-align: middle;
+      pointer-events: auto;
+    }
+
+    details:not(a:focus):focus-within {
+      outline: 2px solid #f0f;
+      background-color: #ff0;
+    }
+
+    details:has(span:focus) summary {
+      outline: 2px solid #f0f;
+      background-color: #f00;
+    }
+
+    details:has(span:focus) summary>p,
+    details a:focus {
+      outline: 2px solid #0f0;
+      background-color: #f9f;
+    }
+
+
+    .sixth {
+      flex-direction: column;
+    }
+
+    footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem;
+      background-color: #222;
+      color: white;
+      margin: 20px auto 10px;
+      border-radius: 1rem;
+      width: 95%;
+    }
+
+    footer article {
+      flex: 0 1 400px;
+    }
+
+    footer div:nth-of-type(2) {
+      flex: 1 1 100%;
+    }
+
+
+    footer div:first-of-type {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+      flex-basis: 0 1 800px;
+    }
+
+    footer ul {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      flex: 1 1 150px;
+      row-gap: 0.5rem;
+      margin-block: 1rem;
+    }
+
+    footer li {
+      list-style: none;
+      margin-block: 0.1rem;
+    }
+
+    footer a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    footer form {
+      width: fit-content;
+      display: flex;
+      gap: 0.5rem;
+      background: #444;
+      padding: 0.5rem;
+      margin: 1rem 0;
+      border-radius: 0.3rem;
+    }
+
+    footer form button {
+      border-radius: 0.2rem;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+    }
+
+    footer form label {
+      display: none;
+    }
+
+    footer form input {
+      background: inherit;
+      border: none;
+      width: 60%;
+      padding: 0.2rem;
+    }
+
+    footer img {
+      width: 60px;
+      border-radius: 50%;
+      border: 2px solid hsl(35 30% 50%);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-wrapper"></div>
+  </header>
+
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <symbol id="arrow" viewBox="0 0 40 20">
+        <path />
+      </symbol>
+    </defs>
+  </svg>
+
+  <main>
+    <section class="first">
+      <h1>Renew Your Software License </h1>
+      <p>Keep your production environment active and get continued access to core updates, bug fixes, and new features.
+        Stay protected with
+        security patches, and 24/7 priority developer support</p>
+      <button onclick="document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });">Get Renewal
+        Quote</button>
+      <p id="contact">Have a question?</p>
+      <a href="mailto:naeemkhan05564@gmail.com?subject=Hello, I wanted to ask" target="_blank"
+        rel="noopener noreferrer">Email</a>
+      <a href="sms:+923439629289" target="_blank" rel="noopener noreferrer">SMS</a>
+      <a href="tel:+923439629289" target="_blank" rel="noopener noreferrer">Call</a>
+      <a href="https://wa.me/03439629289" target="_blank" rel="noopener noreferrer">Whatsapp</a>
+    </section>
+    <section class="second">
+      <div>
+        <h2>The Benefits of Upgrading</h2>
+        <p>Renewing your software deployment ensures your infrastructure remains secure,
+          highly optimized, and fully compliant with modern web standards. Upgrading your
+          current license early eliminates downtimeme, automates workflow pipelines, and
+          provides your engineering team with uninterrupted technical support and peace of mind.
+        </p>
+      </div>
+      <article>
+        <img src="assets\image-40.svg" alt="UE security icon" width="70">
+        <h3>Secure Architecture</h3>
+        <p>Our applications are engineered with modern security standards, featuring a
+          fortified codebase built to withstand vulnerabilities and protect user data integrity.</p>
+      </article>
+      <article>
+        <img src="assets\image-41.svg" alt="UE commercially supported icon" width="70">
+        <h3>Enterprise Compliance</h3>
+        <p>We strictly adhere to regional legal requirements and data protection frameworks,
+          ensuring seameless corporate compliance out of the box.</p>
+      </article>
+      <article>
+        <img src="assets\image-42.svg" alt="UE support icon" width="70">
+        <h3>Dedicated SLAs</h3>
+        <p>Our dedicated response teams are available around the clock to provide timely hotfixes,
+          security patches, and direct infrastructure support.</p>
+      </article>
+    </section>
+    <section class="third">
+      <div>
+        <h2>What’s New in v2.0 Engine</h2>
+        <p>The v2.0 core engine refines your entire deployment workflow with optimized file
+          data processing, real-time reactive UI hooks, and enhanced performance analytics.
+          Experience sub-millisecond execution speeds that you can truly feel across heavy
+          web applications.</p>
+        <a href="#" target="_blank" rel="noopener noreferrer">Learn more</a>
+      </div>
+      <img src="\assets\images\My-Logo4.png" alt="my logo">
+    </section>
+    <section class="fourth">
+      <div>
+        <h2>Choose Your Support Level</h2>
+        <p>Standard core support keeps your infrastructure covere, While our Platinum enterprise
+          tier keeps your operations ahead with rapid response windows, phone support, and
+          dedicated technical account assistance.</p>
+      </div>
+
+      <article>
+        <header>
+          <p>Benefits</p>
+          <p>Standard</p>
+          <p>Platinum</p>
+        </header>
+        <div>
+          <h3>General review of the issue</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Email support communication</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Regular product updates and fixes</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Access to beta and preview versions</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Priority case escalation to top tier technical team</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Priority bug review and updates</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Dedicated phone support and remote infrastructure diagnostics</h3>
+          <small>(1 per quarter)</small>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Assistance with installation, mass deployment, and upgrade planning</h3>
+          <small>(Annual Lifecycle Review)</small>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Product usage and adoption consultation</h3>
+          <small>(Strategic Deployment Consultation)</small>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Invitation to quarterly briefing call with Product Management</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+        <div>
+          <h3>Feature requests as priority roadmap input into the product</h3>
+          <div>
+            <p>Standard:</p><span>🟢</span>
+          </div>
+          <div>
+            <p>Platinum:</p><span>🟡</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="fifth">
+      <h2>Frequently Asked Questions</h2>
+      <a href="#" target="_blank" rel="noopener noreferrer">Learn more about licenses</a>
+
+      <details open>
+        <summary tabindex="-1">
+          <p>Why does my enterprise software license require an annual renewal?</p>
+          <span tabindex="0">🔰</span>
+        </summary>
+        <p>All infrastructure licenses include 1 full year of automated engineering
+          maintenance and core system patches to guarantee continued support and security.</p>
+      </details>
+
+      <details open>
+        <summary tabindex="-1">
+          <p>How do I modify or pause my automated renewal schedule?</p>
+          <span tabindex="0">🔰</span>
+        </summary>
+        <p>Maintenance plans renew automatically until you choose to opt out. You can disable
+          automated updates after your initial deployment through your account dashboard or by contacting support.</p>
+      </details>
+
+      <details open>
+        <summary tabindex="-1">
+          <p>What are the primary benefits of an enterprise deployment model?</p>
+          <span tabindex="0">🔰</span>
+        </summary>
+        <p>Learn more about our scalable enterprise deployment offerings, custom SLA terms, and priority data pipelines
+          in our documentation guide.</p>
+      </details>
+
+      <details open>
+        <summary tabindex="-1">
+          <p>What is included in the premium engineering support package?</p>
+          <span tabindex="0">🔰</span>
+        </summary>
+        <p>All premium tier deployments come with a full year of active infrastructure
+          monitoring, dedicated security patch rollouts, and priority access to our core engineering team.</p>
+      </details>
+
+      <details open>
+        <summary tabindex="-1">
+          <p>What is the core difference between cloud and on-premise deployment?</p>
+          <span tabindex="0">🔰</span>
+        </summary>
+        <p>We offer both flexible cloud-based infrastructure and dedicated on-premise
+          deployments to align with your corporate security policies. Cloud deployments
+          include instant automated system upgrades and real-time scaling out of the box.
+          On-premise infrastructure licenses grant you complete environment control and
+          standalone longevity, but system maintenance, data backups, and security patch
+          configurations must be managed directly by your internal engineering operations team.</p>
+      </details>
+
+      <a href="#" target="_blank" rel="noopener noreferrer">Visit complete FAQs</a>
+    </section>
+
+
+    <section class="sixth">
+      <h2>Need help with your renewal?</h2>
+      <p>Our renewal specialists are here to assist with license questions, billing inquiries, or custom renewal
+        options for your team. Contact us for personalized support and pricing.</p>
+      <a href="#contact" target="_self" rel="noopener noreferrer">Contact Us</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <article>
+      <img src="/assets/images/My-Logo22.png" alt="ultra edit logo">
+
+      <h3>NK Tech Solutions</h3>
+      <p>Providing high-performance development solutions, custom frontend architecture, and robust application
+        engineering for modern software teams.</p>
+    </article>
+
+    <div>
+      <ul>
+        <h3>Company</h3>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">About Us</a>
+        </li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Contact
+            Us</a></li>
+      </ul>
+      <ul>
+        <h3>Products</h3>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">SaaS Core Engine</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Cloud Infrastructure</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">DevOps Automation</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">API Gateways</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Data Pipelines</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">All Products</a>
+        </li>
+      </ul>
+
+      <ul>
+        <h3>Support</h3>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Help Center</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Licensing & Activation</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">File a Support
+            Ticket</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Community Forums</a></li>
+      </ul>
+
+      <ul>
+        <h3>Legal</h3>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Privacy
+            Policy</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">Refund Policy</a></li>
+        <li><a href="#" target="_blank" rel="noopener noreferrer">License
+            Agreement</a></li>
+      </ul>
+    </div>
+
+
+    <div>
+      <h3>Newsletter Signup</h3>
+      <p>Stay updated on new features, tutorials, and exclusive offers.</p>
+
+      <form action="absolute or relative url to your database/server" method="POST">
+        <label for="newsletter-email">Email:</label>
+        <input type="email" id="newsletter-email" name="email" placeholder="email@example.com" required>
+        <button type="submit">Subscribe</button>
+      </form>
+
+    </div>
+
+    <div class="copy-right">© Copyright 2026, All Rights Reserved</div>
+
+  </footer>
+
+  <script>
+    const details = document.querySelectorAll("details");
+    details.forEach((detail) => {
+      const h = detail.querySelector("details>p").offsetHeight;
+      const speed = h / 100; /* 1s per 100px */
+      detail.style.setProperty("--cont-h", `${h}px`);
+      detail.style.setProperty("--speed", `${speed}s`);
+
+      detail.querySelector("summary span").addEventListener("click", (e) => {
+        e.preventDefault();
+        expandDetails(detail);
+      });
+
+      detail.querySelector("summary span").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          expandDetails(detail);
+        }
+      });
+
+    });
+
+    function expandDetails(el) {
+      const p = el.querySelector("details>p");
+      const span = el.querySelector("summary span");
+      p.classList.toggle("activate-p");
+      span.style.transform = p.classList.contains("activate-p") ? "rotatez(180deg)" : "rotatez(0deg)";
+    }
+  </script>
+
+
+  <script type="text/babel">
+    function NavIcon() {
+      return (
+        <a
+          href="https://google.com"
+          target="_blank"
+          style={{
+            pointerEvents: 'auto',
+            display: 'inline-flex',
+            alignItems: 'center',
+            height: '100%',
+            width: 'fit-content'
+          }}
+        >
+          {/* Removed pointerEvents inline here since your CSS already handles it */}
+          <svg className="arrow">
+            <use href="#arrow" />
+          </svg>
+        </a>
+      );
+    }
+
+    function App() {
+      const [isOpen, setIsOpen] = React.useState(false);
+      const navItems = Array(2).fill(["Products", "Pricing", "Resources", "About Us"]).flat();
+
+      return (
+        <nav className={isOpen ? "trigger-ul" : ""}>
+          <div className="logo"></div>
+          <ul>
+            {navItems.map((item, index) => (
+              <li key={index}>
+                {item}
+                <NavIcon />
+              </li>
+            ))}
+          </ul>
+          <div
+            className="hamburger"
+            tabIndex={0}
+            onClick={() => setIsOpen(!isOpen)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsOpen(!isOpen);
+              }
+            }}>
+          </div>
+        </nav>
+      );
+    }
+
+    ReactDOM.createRoot(document.querySelector(".nav-wrapper")).render(<App />);
+  </script>
+</body>
+
+</html>
