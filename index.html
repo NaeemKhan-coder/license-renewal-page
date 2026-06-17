@@ -97,6 +97,14 @@
       justify-content: space-between;
     }
 
+    nav ul li a {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      width: fit-content;
+    }
+
     .arrow {
       height: 50%;
       aspect-ratio: 1;
@@ -150,7 +158,7 @@
         z-index: -2;
       }
 
-      nav.trigger-ul ul {
+      nav.isOpen ul {
         --slider-num: 100%;
       }
 
@@ -158,14 +166,14 @@
         width: 100%;
       }
 
+      /* The middle line */
       .hamburger {
         width: 10%;
         height: 22%;
-        background: rgb(176, 56, 56);
-        /* The middle line */
         position: relative;
         background: blue;
         pointer-events: auto;
+        cursor: pointer;
       }
 
       .hamburger::before,
@@ -180,17 +188,18 @@
         outline: 0.7cqw solid white;
       }
 
-      /* The top line */
+
       .hamburger::before {
         top: -100%;
       }
 
-      /* The bottom line */
+      /* The top line */
       .hamburger::after {
         top: 100%;
       }
 
-      nav.trigger-ul .hamburger,
+      /* The bottom line */
+      nav.isOpen .hamburger,
       .hamburger:focus-visible.hamburger {
         border-radius: 50%;
         outline: 2px solid white;
@@ -198,8 +207,8 @@
       }
 
       /* The 'Buns' (Top and Bottom) */
-      nav.trigger-ul .hamburger::before,
-      nav.trigger-ul .hamburger::after,
+      nav.isOpen .hamburger::before,
+      nav.isOpen .hamburger::after,
       .hamburger:focus-visible.hamburger::before,
       .hamburger:focus-visible.hamburger::after {
         border-radius: 0;
@@ -207,12 +216,15 @@
         z-index: -1;
       }
 
+      .hamburger:focus-visible {
+        box-shadow: 0 0 30px 15px blue;
+      }
+
       .hamburger,
       .hamburger::before,
       .hamburger::after {
         transition: all 0.3s ease-in-out;
       }
-
     }
 
     .first,
@@ -611,9 +623,6 @@
 </head>
 
 <body>
-  <header>
-    <div class="nav-wrapper"></div>
-  </header>
 
   <svg width="0" height="0" style="position: absolute;">
     <defs>
@@ -622,6 +631,17 @@
       </symbol>
     </defs>
   </svg>
+
+  <header>
+    <div class="nav-wrapper">
+      <nav>
+        <div class="logo"></div>
+        <ul></ul>
+        <div class="hamburger isOpen" tabindex="0"></div>
+      </nav>
+    </div>
+  </header>
+
 
   <main>
     <section class="first">
@@ -958,59 +978,33 @@
   </script>
 
 
-  <script type="text/babel">
-    function NavIcon() {
-      return (
-        <a
-          href="https://google.com"
-          target="_blank"
-          style={{
-            pointerEvents: 'auto',
-            display: 'inline-flex',
-            alignItems: 'center',
-            height: '100%',
-            width: 'fit-content'
-          }}
-        >
-          {/* Removed pointerEvents inline here since your CSS already handles it */}
-          <svg className="arrow">
+  <script>
+    const menu = document.querySelector("nav ul");
+    const navItems = Array(2).fill(
+      ["Products", "Pricing", "Resources", "About Us"]).flat();
+    navItems.map((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      li.insertAdjacentHTML("beforeend",
+        `<a href="https://google.com" target="_blank">
+          <svg class="arrow">
             <use href="#arrow" />
           </svg>
-        </a>
-      );
+        </a>`)
+      menu.appendChild(li);
+    });
+
+    function isOpen(e) {
+      if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") { return; }
+      if (e.key === " ") { e.preventDefault(); }
+
+      const nav = document.querySelector("nav");
+      nav.classList.toggle("isOpen");
     }
 
-    function App() {
-      const [isOpen, setIsOpen] = React.useState(false);
-      const navItems = Array(2).fill(["Products", "Pricing", "Resources", "About Us"]).flat();
-
-      return (
-        <nav className={isOpen ? "trigger-ul" : ""}>
-          <div className="logo"></div>
-          <ul>
-            {navItems.map((item, index) => (
-              <li key={index}>
-                {item}
-                <NavIcon />
-              </li>
-            ))}
-          </ul>
-          <div
-            className="hamburger"
-            tabIndex={0}
-            onClick={() => setIsOpen(!isOpen)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setIsOpen(!isOpen);
-              }
-            }}>
-          </div>
-        </nav>
-      );
-    }
-
-    ReactDOM.createRoot(document.querySelector(".nav-wrapper")).render(<App />);
+    const hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", isOpen);
+    hamburger.addEventListener("keydown", isOpen);
   </script>
 </body>
 
